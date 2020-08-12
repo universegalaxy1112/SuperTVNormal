@@ -1,0 +1,67 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="mainCategoryItem"
+            type="com.livetv.android.model.MainCategory" />
+        <variable
+            name="mainCategoriesAdapter"
+            type="com.livetv.android.view.adapters.MainCategoriesRecyclerAdapter" />
+    </data>
+
+    <com.livetv.android.view.custom_views.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="4dp"
+    android:background="@drawable/main_cat_item_selector"
+    android:clickable="true"
+    android:focusable="true"
+    android:onClick="@{mainCategoriesAdapter.onClickItem}">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="@color/colorBackground"
+        app:cardCornerRadius="20dp">
+
+        <ImageView
+            android:id="@+id/movie_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@color/transparent"
+            android:scaleType="centerCrop"
+            app:imageId="@{mainCategoryItem.catImageId}" />
+
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@color/item_name_black_overlay"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@{mainCategoryItem.catName}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorTextTitle"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/movie_image_selected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@drawable/round_radius_border_selected_big"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+    </android.support.v7.widget.CardView>
+</com.livetv.android.view.custom_views.SquareRelativeLayout>
+</layout>

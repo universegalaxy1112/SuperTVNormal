@@ -1,0 +1,75 @@
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+        <variable
+            name="mainCategoriesMenuFragmentVM"
+            type="com.livetv.android.viewmodel.MainCategoriesMenuViewModel" />
+    </data>
+<LinearLayout
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_scrollFlags="scroll"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+            <ImageView
+                android:id="@+id/account"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/search_item_selector"
+                android:padding="2dp"
+                android:src="@drawable/user_icon"
+                android:onClick="@{mainCategoriesMenuFragmentVM.onAccountClick}"
+                app:hidden="@{mainCategoriesMenuFragmentVM.isTV}" />
+        </RelativeLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <ImageView
+        android:layout_width="400dp"
+        android:layout_height="107dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/android_splash" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="5dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/main_categories_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:baselineAligned="false"
+            android:descendantFocusability="afterDescendants"
+            android:scrollbars="vertical" />
+    </LinearLayout>
+</LinearLayout>
+
+</layout>

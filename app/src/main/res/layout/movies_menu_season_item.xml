@@ -1,0 +1,91 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="seasonModel"
+            type="com.livetv.android.model.Season" />
+        <variable
+            name="seasonAdapter"
+            type="com.livetv.android.view.adapters.SeasonsRecyclerAdapter" />
+    </data>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:id="@+id/movies_menu_category_item_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rv_item_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:focusable="true"
+        android:nextFocusLeft="@+id/rv_item_header"
+        android:nextFocusRight="@+id/rv_item_header"
+        android:nextFocusDown="@+id/movies_recyclerview"
+        android:onClick="@{seasonAdapter.onClickItem}">
+
+        <TextView
+            android:id="@+id/season_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="12dp"
+            android:background="@color/transparent"
+            android:focusable="false"
+            android:paddingLeft="10dp"
+            android:text="@{seasonModel.name}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorTextTitle"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/show_as_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="12dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/search_item_selector"
+            android:focusable="false"
+            android:src="@drawable/more_icon" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:paddingBottom="5dp">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@color/transparent"
+            android:indeterminateOnly="true"
+            android:padding="5dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/movies_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:descendantFocusability="afterDescendants"
+            android:scrollbars="vertical"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/movies_error_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="Error cargando la lista"
+            android:textColor="@color/colorPrimary"
+            android:visibility="gone" />
+    </RelativeLayout>
+</LinearLayout>
+</layout>

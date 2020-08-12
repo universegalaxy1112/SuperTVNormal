@@ -1,0 +1,36 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="liveTVCategoryItem"
+            type="com.livetv.android.model.LiveTVCategory" />
+        <variable
+            name="liveTVCategoryAdapter"
+            type="com.livetv.android.view.adapters.LiveTVCategoryRecyclerAdapter" />
+    </data>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorBackgroundAlpha"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/channel_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:background="@drawable/livetv_category_selector"
+        android:ellipsize="end"
+        android:focusable="true"
+        android:gravity="center"
+        android:lines="1"
+        android:maxLines="1"
+        android:padding="5dp"
+        android:onClick="@{liveTVCategoryAdapter.onClickItem}"
+        android:text="@{liveTVCategoryItem.catName}"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/text_light_color" />
+</LinearLayout>
+</layout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <item
+        android:id="@+id/from_start"
+        android:orderInCategory="100"
+        android:title="Reproducir desde el inicio"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/rate"
+        android:orderInCategory="100"
+        android:title="Calificar"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/report"
+        android:orderInCategory="100"
+        android:title="Reportar enlace"
+        app:showAsAction="never" />
+</menu>

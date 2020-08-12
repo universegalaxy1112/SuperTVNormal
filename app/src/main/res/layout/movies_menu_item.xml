@@ -1,0 +1,65 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="moviesMenuItem"
+            type="com.livetv.android.model.Movie" />
+        <variable
+            name="moviesAdapter"
+            type="com.livetv.android.view.adapters.MoviesRecyclerAdapter" />
+    </data>
+<com.livetv.android.view.custom_views.MovieItemRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="4dp"
+    android:background="@drawable/movie_item_selector"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:onClick="@{moviesAdapter.onClickItem}">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/image_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="@color/colorBackground"
+        app:cardCornerRadius="10dp">
+
+        <ImageView
+            android:id="@+id/movie_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:background="@color/transparent"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@color/item_name_black_overlay"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="2"
+            android:maxLines="2"
+            android:text="@{moviesMenuItem.Title}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorTextTitle"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/movie_image_selected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@drawable/round_radius_border_selected_big"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+    </android.support.v7.widget.CardView>
+</com.livetv.android.view.custom_views.MovieItemRelativeLayout>
+
+</layout>

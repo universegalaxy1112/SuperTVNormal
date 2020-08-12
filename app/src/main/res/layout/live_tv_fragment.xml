@@ -1,0 +1,129 @@
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+        <variable
+            name="liveTVFragmentVM"
+            type="com.livetv.android.viewmodel.LiveTVViewModel" />
+    </data>
+<RelativeLayout
+    android:id="@+id/list_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundAlpha">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:hidden="@{!liveTVFragmentVM.isConnected}"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackgroundAlpha"
+            android:focusable="false"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="35"
+                android:background="@color/live_tv_channel_color"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Canal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/colorTextTitle" />
+
+            <TextView
+                android:id="@+id/program_one"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="35"
+                android:background="@color/live_tv_program_color"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="2"
+                android:maxLines="2"
+                android:text="Ahora"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/live_tv_channel_color" />
+
+            <TextView
+                android:id="@+id/program_two"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="30"
+                android:background="@color/live_tv_program_color"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="2"
+                android:maxLines="2"
+                android:text="Después"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/live_tv_channel_color" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/live_tv_channel_color" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/live_tv_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:descendantFocusability="afterDescendants"
+            android:focusable="true"
+            android:scrollbars="vertical" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        app:hidden="@{liveTVFragmentVM.isConnected}"
+        android:text="You don&apos;t have an active internet connection. Please connect your device and try again."
+        android:textColor="@color/colorTextTitle" />
+
+    <LinearLayout
+        android:id="@+id/categories_recyclerview_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/colorBackgroundAlpha"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Categorías"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorTextTitle"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/categories_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackgroundAlpha"
+            android:descendantFocusability="afterDescendants"
+            android:focusable="true"
+            android:scrollbars="vertical" />
+    </LinearLayout>
+</RelativeLayout>
+
+</layout>

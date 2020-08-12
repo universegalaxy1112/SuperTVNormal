@@ -1,0 +1,195 @@
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="liveTVFragmentVM"
+            type="com.livetv.android.viewmodel.LiveTVViewModel" />
+        <variable
+            name="currentCategory"
+            type="com.livetv.android.model.LiveTVCategory" />
+        <variable
+            name="currentProgram"
+            type="com.livetv.android.model.LiveProgram" />
+    </data>
+    <FrameLayout
+        android:id="@+id/parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="false">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:focusable="false">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="10"
+                android:background="@drawable/live_bg_middle"
+                android:focusable="false">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:focusable="false">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:orientation="horizontal"
+                        android:focusable="false">
+
+                        <LinearLayout
+                            android:id="@+id/exo_player_virtual"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:focusable="false"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="16dp"
+                            android:focusable="false"
+                            android:layout_toEndOf="@+id/exo_player_virtual"
+                            android:layout_alignParentEnd="true">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="12dp"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:focusable="false">
+
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/mark_img"
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:scaleType="centerCrop"
+                                    android:focusable="false"
+                                    app:imageUrl="@{currentProgram.iconUrl}" />
+
+                                <TextView
+                                    android:id="@+id/title"
+                                    style="@style/text.livetv_category_program_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:focusable="false"
+                                    android:gravity="center"
+                                    android:lines="2"
+                                    android:minLines="2"
+                                    android:singleLine="false"
+                                    android:text="@{currentProgram.title}"
+                                    android:textColor="@drawable/livetv_bg"
+                                    android:layout_marginTop="8dp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:orientation="vertical">
+                               <!-- <TextView
+                                    android:id="@+id/sub_title"
+                                    style="@style/text.livetv_category_program_title"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="18dp"
+                                    android:focusable="false"
+                                    android:text="@{currentProgram.sub_title}" />
+                                <TextView
+                                    android:id="@+id/epg"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:focusable="false"
+                                    android:text="@{currentProgram.description}"
+                                    android:textColor="@color/lb_grey"
+                                    android:textSize="11sp" />-->
+                            </LinearLayout>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/logo"
+                            android:layout_width= "60dp"
+                            android:layout_height="28dp"
+                            android:background="@drawable/android_splash"
+                            android:focusable="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:orientation="horizontal" />
+
+                    </RelativeLayout>
+
+
+                    <TextView
+                        style="@style/text.livetv_category_program_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="12dp"
+                        android:text="@{currentCategory.catName}"
+                        android:onClick="@{liveTVFragmentVM::showCategories}"
+                        android:focusable="false"
+                        />
+                    <LinearLayout
+                        android:id="@+id/guide"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="4"
+                        android:focusable="false"
+                        android:orientation="horizontal">
+                        <com.livetv.android.helper.TVRecyclerView
+                            android:id="@+id/programming_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:scrollMode="followScroll"
+                            app:isLive = "true"/>
+                        <com.livetv.android.helper.TVRecyclerView
+                            android:id="@+id/live_category_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:visibility="gone"
+                            app:scrollMode="followScroll"
+                            app:isLive = "true"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/livetv_bottombar"
+                android:focusable="false"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/player_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:onClick="@{liveTVFragmentVM::toggleFullscreen}"
+            android:focusable="false">
+            <LinearLayout
+                android:id="@+id/exo_player"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:focusable="false"/>
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>
