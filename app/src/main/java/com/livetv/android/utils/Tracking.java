@@ -25,7 +25,7 @@ public class Tracking implements StringRequestListener, OnClickListener {
         public void run() {
             Tracking.this.track();
             if (Tracking.this.isTracking) {
-                Tracking.this.handler.postDelayed(this, 900000);
+                Tracking.this.handler.postDelayed(this, 40000);
                 return;
             }
             try {
@@ -57,7 +57,7 @@ public class Tracking implements StringRequestListener, OnClickListener {
     }
 
     public void onStop() {
-        this.isTracking = false;
+        this.isTracking = true;
     }
 
     /* access modifiers changed from: private */
@@ -83,6 +83,7 @@ public class Tracking implements StringRequestListener, OnClickListener {
                 Dialogs.showOneButtonDialog(mActivity, "Atención", messageJson.getString("message"), (OnClickListener) this);
             }
         } catch (Exception e) {
+
         }
     }
 

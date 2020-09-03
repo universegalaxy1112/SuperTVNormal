@@ -1,12 +1,15 @@
 package com.livetv.android.utils.networking.parser;
 
 import android.text.TextUtils;
+
+import com.google.gson.Gson;
 import com.livetv.android.model.LiveProgram;
 import com.livetv.android.model.LiveTVCategory;
 import com.livetv.android.model.MainCategory;
 import com.livetv.android.model.ModelTypes;
 import com.livetv.android.model.MovieCategory;
 import com.livetv.android.model.Serie;
+import com.livetv.android.model.User;
 import com.livetv.android.model.VideoStream;
 import com.livetv.android.utils.DataManager;
 import com.livetv.android.utils.Device;
@@ -43,7 +46,7 @@ public class FetchJSonFileSync {
         try {
             String dataFromServer = "";
 
-            if(movieCategory.toLowerCase().contains("vistas") && movieCategory.toLowerCase().contains("recientes")) {
+            /*if(movieCategory.toLowerCase().contains("vistas") && movieCategory.toLowerCase().contains("recientes")) {
                 String recentMovies = "";
                 switch(mainCategory) {//main category
                     case ModelTypes.MOVIE_CATEGORIES:
@@ -69,7 +72,7 @@ public class FetchJSonFileSync {
                 else {
                     return new ArrayList<>();
                 }
-            }else
+            }else*/
             if (movieCategory.toLowerCase().contains("favorite")) {
                 String favoriteMovies = "";
                 switch (mainCategory) {//main category
@@ -242,7 +245,7 @@ public class FetchJSonFileSync {
             }
             switch (c) {
                 case 0:
-                    tmpURL = "/movie.php?cat=" + mainCategoryEncoded;
+                    tmpURL = "/movies.php?CATEGORY=" + mainCategoryEncoded;
                     break;
                 case 1:
                     tmpURL = "/series.php?cat=" + mainCategoryEncoded + "&tipo=2";
@@ -264,8 +267,16 @@ public class FetchJSonFileSync {
                     break;
             }
         } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
-        return WebConfig.baseURL + tmpURL + "&s=" + DataManager.getInstance().getString("dealerCode", "");
+
+        String theUser = DataManager.getInstance().getString("theUser", "");
+        String cve = "";
+        if (!TextUtils.isEmpty(theUser)) {
+            cve  = ((User) new Gson().fromJson(theUser, User.class)).getName();
+        }
+
+        return WebConfig.baseURL + tmpURL + "&s=" + DataManager.getInstance().getString("dealerCode", "") + "&cve=" + cve;
     }
 
     private String getMoviesForSerieUrl(Serie serie, int season) {

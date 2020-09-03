@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 
 import com.livetv.android.R;
 import com.livetv.android.utils.Device;
+import com.livetv.android.utils.Tracking;
 import com.livetv.android.utils.networking.services.HttpRequest;
 
 public class SplashActivity extends BaseActivity {
@@ -26,5 +27,6 @@ public class SplashActivity extends BaseActivity {
         setContentView((int) R.layout.splash_activity);
         this.splashFragment = new SplashFragment();
         getSupportFragmentManager().beginTransaction().add((int) R.id.splash_container,  this.splashFragment).commit();
+
     }
 }

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 
 import com.livetv.android.R;
 import com.livetv.android.utils.Screen;
+import com.livetv.android.utils.Tracking;
 
 public class MainCategoriesMenuActivity extends BaseActivity {
     private MainCategoriesMenuFragment mainCategoriesMenuFragment;
@@ -24,5 +25,6 @@ public class MainCategoriesMenuActivity extends BaseActivity {
         this.mainCategoriesMenuFragment = new MainCategoriesMenuFragment();
         getSupportFragmentManager().beginTransaction().add((int) R.id.main_categories_menu_container,  this.mainCategoriesMenuFragment).commit();
         Screen.SetScreenDimensions(this);
+        Tracking.getInstance(this).onStart();
     }
 }

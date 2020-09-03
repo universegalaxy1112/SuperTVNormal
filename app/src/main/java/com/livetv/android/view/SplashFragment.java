@@ -25,6 +25,7 @@ import com.livetv.android.listeners.DialogListener;
 import com.livetv.android.utils.Connectivity;
 import com.livetv.android.utils.DataManager;
 import com.livetv.android.utils.Dialogs;
+import com.livetv.android.utils.Tracking;
 import com.livetv.android.utils.networking.services.HttpRequest;
 import com.livetv.android.viewmodel.Lifecycle;
 import com.livetv.android.viewmodel.SplashViewModel;
@@ -67,9 +68,18 @@ public class SplashFragment extends BaseFragment implements SplashViewModelContr
 
     public void onResume() {
         super.onResume();
-        if (!this.isInit) {
+        /*if (!this.isInit) {
             this.splashViewModel.login();
             this.isInit = true;
+        }*/
+
+        if (!isInit) {
+            if (getPermissionStatus("android.permission.WRITE_EXTERNAL_STORAGE") != 0) {
+                requestStoragePermission();
+            } else {
+                splashViewModel.login();
+                isInit = true;
+            }
         }
     }
 
@@ -123,26 +133,29 @@ public class SplashFragment extends BaseFragment implements SplashViewModelContr
                     if (SplashFragment.this.getPermissionStatus("android.permission.WRITE_EXTERNAL_STORAGE") != 0) {
                         SplashFragment.this.requestStoragePermission();
                     } else if (Connectivity.isConnected()) {
-                        SplashFragment.this.downloadProgress = new ProgressDialog(SplashFragment.this.getActivity());
-                        SplashFragment.this.downloadProgress.setProgressStyle(1);
-                        SplashFragment.this.downloadProgress.setMessage("Downloading");
-                        SplashFragment.this.downloadProgress.setIndeterminate(false);
-                        SplashFragment.this.downloadProgress.setCancelable(false);
-                        SplashFragment.this.downloadProgress.show();
-                        SplashFragment.this.splashViewModel.downloadUpdate(location, SplashFragment.this.downloadProgress);
+                        downloadProgress = new ProgressDialog(getActivity(), ProgressDialog.THEME_HOLO_LIGHT);
+                        downloadProgress.setProgressStyle(1);
+                        downloadProgress.setMessage("Downloading");
+                        downloadProgress.setIndeterminate(false);
+                        downloadProgress.setCancelable(false);
+                        downloadProgress.show();
+                        splashViewModel.downloadUpdate(location, downloadProgress);
                     } else {
                         SplashFragment.this.goToNoConnectionError();
                     }
                 }
 
                 public void onCancel() {
-                    SplashFragment.this.getActivity().finish();
+                    splashViewModel.login();
                 }
             });
-            return;
+
+        } else {
+            splashViewModel.login();
+            finishActivity();
         }
-        launchActivity(MainCategoriesMenuActivity.class);
-        getActivity().finish();
+
+
     }
 
     public void onDownloadUpdateCompleted(String location) {
@@ -189,9 +202,11 @@ public class SplashFragment extends BaseFragment implements SplashViewModelContr
         switch (error) {
             case 1:
                 Dialogs.showOneButtonDialog((Activity) getActivity(), (int) R.string.verify_unknown_sources, listener);
+                splashViewModel.login();
                 return;
             default:
                 Dialogs.showOneButtonDialog((Activity) getActivity(), (int) R.string.new_version_generic_error_message, listener);
+                splashViewModel.login();
                 return;
         }
     }
@@ -232,7 +247,7 @@ public class SplashFragment extends BaseFragment implements SplashViewModelContr
             @TargetApi(23)
             public void onAccept() {
                 if (!SplashFragment.this.denyAll) {
-                    DataManager.getInstance().saveData("storagePermissionRequested", Boolean.valueOf(true));
+                    DataManager.getInstance().saveData("storagePermissionRequested", Boolean.TRUE);
                     SplashFragment.this.requestPermissions(new String[]{"android.permission.WRITE_EXTERNAL_STORAGE"}, 1);
                     return;
                 }
@@ -254,20 +269,24 @@ public class SplashFragment extends BaseFragment implements SplashViewModelContr
             return;
         }
         if (getPermissionStatus("android.permission.WRITE_EXTERNAL_STORAGE") == 0) {
-            downloadUpdate(this.updateLocation);
+            //splashViewModel.checkForUpdate();
+            splashViewModel.login();
+            isInit = true;
         } else {
-            requestStoragePermission();
+            finishActivity();
         }
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode != 1) {
-            return;
+            finishActivity();
         }
         if (getPermissionStatus("android.permission.WRITE_EXTERNAL_STORAGE") == 0) {
-            downloadUpdate(this.updateLocation);
+            //splashViewModel.checkForUpdate();
+            splashViewModel.login();
+            isInit = true;
         } else {
-            requestStoragePermission();
+            finishActivity();
         }
     }
 

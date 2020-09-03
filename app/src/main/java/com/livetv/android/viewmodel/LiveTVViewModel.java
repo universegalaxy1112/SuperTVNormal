@@ -95,13 +95,18 @@ public class LiveTVViewModel implements LiveTVViewModelContract.ViewModel, LiveP
         layoutParams.setMargins(margin,margin,20,20);
         activityLiveBinding.exoPlayer.setLayoutParams(layoutParams);
         activityLiveBinding.exoPlayer.findViewById(R.id.top_bar).setVisibility(View.GONE);
+        activityLiveBinding.exoPlayer.findViewById(R.id.detail_bar).setVisibility(View.GONE);
         isFullscreen = false;
         showPrograms();
     }
 
-    public void fullScreen(View view){
-        if(isFullscreen) return;
-        DisplayMetrics displayMetrics = new DisplayMetrics();
+    public void fullScreen(VideoPlayFragment fragment){
+        if(isFullscreen) {
+            if(fragment != null) {
+                fragment.toggleDetail();
+            }
+            return;
+        }        DisplayMetrics displayMetrics = new DisplayMetrics();
         ((AppCompatActivity)mContext).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(activityLiveBinding.parent.getMeasuredWidth(),
@@ -118,13 +123,13 @@ public class LiveTVViewModel implements LiveTVViewModelContract.ViewModel, LiveP
         if(isFullscreen) return;
         activityLiveBinding.programmingRecycler.setVisibility(View.GONE);
         activityLiveBinding.liveCategoryRecycler.setVisibility(View.VISIBLE);
-        activityLiveBinding.logo.requestFocus();
+       // activityLiveBinding.logo.requestFocus();
     }
 
     private void showPrograms() {
         activityLiveBinding.programmingRecycler.setVisibility(View.VISIBLE);
         activityLiveBinding.liveCategoryRecycler.setVisibility(View.GONE);
-        activityLiveBinding.logo.requestFocus();
+        //activityLiveBinding.logo.requestFocus();
     }
 
     public void toggleTitle(VideoPlayFragment videoPlayFragment) {

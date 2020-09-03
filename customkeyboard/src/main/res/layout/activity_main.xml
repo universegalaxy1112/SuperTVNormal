@@ -24,7 +24,7 @@
         <!--android:layout_below="@+id/edit_text_view"-->
         <!--android:layout_centerHorizontal="true"-->
         <!--android:focusable="true"-->
-        <!--android:background="@android:color/transparent"-->
+        <!--android:livetv_bg_middle="@android:color/transparent"-->
         <!--android:keyBackground="@color/colorAccent"-->
         <!--android:focusableInTouchMode="true"-->
         <!--android:visibility="gone" />-->

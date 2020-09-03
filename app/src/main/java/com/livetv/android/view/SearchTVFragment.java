@@ -210,7 +210,9 @@ public class SearchTVFragment extends SearchSupportFragment implements SearchVie
     }
 
     private class UpdateBackgroundTask extends TimerTask {
+
         private UpdateBackgroundTask() {
+
         }
 
         public void run() {
@@ -258,8 +260,10 @@ public class SearchTVFragment extends SearchSupportFragment implements SearchVie
         setSearchResultProvider(this);
         setOnItemViewSelectedListener(new ItemViewSelectedListener());
         setOnItemViewClickedListener(new ItemViewClickedListener());
-        if (getPermissionStatus("android.permission.RECORD_AUDIO") == 0) {
+        if (getPermissionStatus("android.permission.RECORD_AUDIO") != 0) {
             setupAudioRecognition();
+        } else {
+            requestRecordAudioPermission();
         }
     }
 
@@ -281,15 +285,16 @@ public class SearchTVFragment extends SearchSupportFragment implements SearchVie
     }
 
     public void onMovieAccepted(Movie movie) {
+
     }
 
-    public void startRecognition() {
+    /*public void startRecognition() {
         if (getPermissionStatus("android.permission.RECORD_AUDIO") == 0) {
             super.startRecognition();
         } else {
             requestRecordAudioPermission();
         }
-    }
+    }*/
 
     public void closeKeyboard() {
         getActivity().getWindow().setSoftInputMode(2);
@@ -368,21 +373,21 @@ public class SearchTVFragment extends SearchSupportFragment implements SearchVie
                     default:
                         return;
                 }
-            case 4169:
+           /* case 4169:
                 if (getPermissionStatus("android.permission.RECORD_AUDIO") == 0) {
                     setupAudioRecognition();
                     return;
                 }
-                return;
+                return;*/
             default:
                 return;
         }
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 4 && getPermissionStatus("android.permission.RECORD_AUDIO") == 0) {
+        /*if (requestCode == 4 && getPermissionStatus("android.permission.RECORD_AUDIO") == 0) {
             setupAudioRecognition();
-        }
+        }*/
     }
 
     public void setupAudioRecognition() {

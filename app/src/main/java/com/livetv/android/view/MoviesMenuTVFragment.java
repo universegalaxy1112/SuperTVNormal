@@ -193,8 +193,8 @@ public class MoviesMenuTVFragment extends BaseTVFragment implements MoviesMenuVi
         if (this.selectedType == SelectedType.MAIN_CATEGORY) {
             List<MovieCategory> mCategoriesList = VideoStreamManager.getInstance().getMainCategory(this.mainCategoryId).getMovieCategories();
             setTitle(VideoStreamManager.getInstance().getMainCategory(this.mainCategoryId).getCatName());
-            for (int i = 0; i < mCategoriesList.size() - 1; i++) {
-                NetManager.getInstance().retrieveMoviesForSubCategory(VideoStreamManager.getInstance().getMainCategory(this.mainCategoryId), (MovieCategory) mCategoriesList.get(i + 1), this, 60);
+            for (int i = 0; i < (mainCategoryId == 4 ? mCategoriesList.size() : mCategoriesList.size() - 1); i++) {
+                NetManager.getInstance().retrieveMoviesForSubCategory(VideoStreamManager.getInstance().getMainCategory(this.mainCategoryId), (MovieCategory) mCategoriesList.get(mainCategoryId == 4 ? i : i + 1), this, 60);
             }
         }
         if (this.selectedType == SelectedType.SEASONS) {

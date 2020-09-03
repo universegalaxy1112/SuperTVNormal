@@ -6,10 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.livetv.android.R;
+import com.livetv.android.view.exoplayernew.VideoPlayFragment;
 
 public class VideoActivity extends AppCompatActivity {
 
-    private VideoFragment videoFragment;
+    private VideoPlayFragment videoFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -17,7 +18,7 @@ public class VideoActivity extends AppCompatActivity {
 
         setContentView(R.layout.video_activity);
 
-        videoFragment = new VideoFragment();
+        videoFragment = new VideoPlayFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.video_container, videoFragment).commit();

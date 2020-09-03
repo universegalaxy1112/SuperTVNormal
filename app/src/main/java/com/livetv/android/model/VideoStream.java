@@ -12,6 +12,7 @@ public abstract class VideoStream extends BaseObservable {
     private int position;
     private String searchTitle;
     private boolean seen;
+    private int tipo = -1;
 
     public String getSearchTitle() {
         return this.searchTitle;
@@ -38,11 +39,11 @@ public abstract class VideoStream extends BaseObservable {
     }
 
     public String getTitle() {
-        return this.Title;
+        return this.Title == null ? "" : this.Title.trim();
     }
 
     public void setTitle(String title) {
-        this.Title = title;
+        this.Title = title == null ? "" : title.trim();
     }
 
     public String getStreamUrl() {
@@ -104,5 +105,13 @@ public abstract class VideoStream extends BaseObservable {
 
     public int hashCode() {
         return this.ContentId;
+    }
+
+    public int getCategoryType() {
+        return tipo;
+    }
+
+    public void setCategoryType(int categoryType) {
+        this.tipo = categoryType;
     }
 }

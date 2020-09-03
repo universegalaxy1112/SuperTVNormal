@@ -1,12 +1,14 @@
 package com.livetv.android.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AlertDialog.Builder;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import com.livetv.android.R;
 import com.livetv.android.LiveTvApplication;
@@ -72,6 +74,12 @@ public class Dialogs {
         AlertDialog alert = dialog.create();
         alert.setCanceledOnTouchOutside(false);
         alert.show();
+        Button ne=alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        Button po=alert.getButton(DialogInterface.BUTTON_POSITIVE);
+        ne.setBackground(((Context)activity).getDrawable(R.drawable.dialog_btn_background));
+        po.setBackground(((Context)activity).getDrawable(R.drawable.dialog_btn_background));
+        ne.setPadding(16,4,16,4);
+        po.setPadding(16,4,16,4);
     }
 
     public static void showTwoButtonsDialog(Activity activity, int message, DialogListener dialogListener) {
@@ -97,6 +105,13 @@ public class Dialogs {
         AlertDialog alert = dialog.create();
         alert.setCanceledOnTouchOutside(false);
         alert.show();
+
+        Button ne=alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        Button po=alert.getButton(DialogInterface.BUTTON_POSITIVE);
+        ne.setBackground(((Context)activity).getDrawable(R.drawable.dialog_btn_background));
+        po.setBackground(((Context)activity).getDrawable(R.drawable.dialog_btn_background));
+        ne.setPadding(16,4,16,4);
+        po.setPadding(16,4,16,4);
     }
 
     public static void showTwoButtonsDialog(Activity activity, int accept, int cancel, String message, final DialogListener dialogListener) {
@@ -118,5 +133,11 @@ public class Dialogs {
         AlertDialog alert = dialog.create();
         alert.setCanceledOnTouchOutside(false);
         alert.show();
+        Button ne=alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        Button po=alert.getButton(DialogInterface.BUTTON_POSITIVE);
+        ne.setBackground(((Context)activity).getDrawable(R.drawable.dialog_btn_background));
+        po.setBackground(((Context)activity).getDrawable(R.drawable.dialog_btn_background));
+        ne.setPadding(16,4,16,4);
+        po.setPadding(16,4,16,4);
     }
 }

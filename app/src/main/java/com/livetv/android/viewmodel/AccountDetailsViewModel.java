@@ -1,6 +1,7 @@
 package com.livetv.android.viewmodel;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -8,23 +9,28 @@ import com.google.gson.Gson;
 import com.livetv.android.R;
 import com.livetv.android.databinding.AccountDetailsFragmentBinding;
 import com.livetv.android.listeners.DialogListener;
+import com.livetv.android.listeners.DownloaderListener;
 import com.livetv.android.listeners.StringRequestListener;
 import com.livetv.android.model.User;
 import com.livetv.android.utils.Connectivity;
 import com.livetv.android.utils.DataManager;
 import com.livetv.android.utils.Device;
 import com.livetv.android.utils.Dialogs;
+import com.livetv.android.utils.Downloader;
 import com.livetv.android.utils.networking.NetManager;
 import com.livetv.android.utils.networking.WebConfig;
 import com.livetv.android.viewmodel.AccountDetailsViewModelContract.View;
 import com.livetv.android.viewmodel.AccountDetailsViewModelContract.ViewModel;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class AccountDetailsViewModel implements ViewModel {
     public ObservableBoolean isLoading = new ObservableBoolean(false);
     public ObservableBoolean isTV = new ObservableBoolean(Device.canTreatAsBox());
     private final Activity mActivity;
     /* access modifiers changed from: private */
-    public View viewCallback;
+    public AccountDetailsViewModelContract.View viewCallback;
 
     public AccountDetailsViewModel(Activity activity) {
         this.mActivity = activity;
@@ -34,7 +40,7 @@ public class AccountDetailsViewModel implements ViewModel {
     }
 
     public void onViewAttached(@NonNull Lifecycle.View viewCallback2) {
-        this.viewCallback = (View) viewCallback2;
+        this.viewCallback = (AccountDetailsViewModelContract.View) viewCallback2;
     }
 
     public void onViewDetached() {
@@ -58,6 +64,50 @@ public class AccountDetailsViewModel implements ViewModel {
         } else {
             closeSession();
         }
+    }
+
+    @Override
+    public void checkForUpdate(android.view.View view) {
+        NetManager.getInstance().performCheckForUpdate(new StringRequestListener() {
+            @Override
+            public void onCompleted(String response) {
+                if (!TextUtils.isEmpty(response)) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+
+                        if (jsonObject.has("android_version")) {
+                            if (!Device.getVersionInstalled().replaceAll("\\.", "").equals(jsonObject.getString("android_version"))) {
+                                AccountDetailsViewModel.this.viewCallback.onCheckForUpdateCompleted(true, jsonObject.getString("link_android") + "/android" + jsonObject.getString("android_version") + ".apk");
+                                return;
+                            }
+                            AccountDetailsViewModel.this.viewCallback.onCheckForUpdateCompleted(false, null);
+                            return;
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+
+    public void downloadUpdate(String location, ProgressDialog progress) {
+        Downloader.getInstance().performDownload(location, progress, new DownloaderListener() {
+            @Override
+            public void onDownloadComplete(String str) {
+                AccountDetailsViewModel.this.viewCallback.onDownloadUpdateCompleted(str);
+            }
+
+            @Override
+            public void onDownloadError(int i) {
+
+            }
+        });
     }
 
     /* access modifiers changed from: private */
@@ -92,4 +142,6 @@ public class AccountDetailsViewModel implements ViewModel {
             this.viewCallback.onError();
         }
     }
+
+
 }

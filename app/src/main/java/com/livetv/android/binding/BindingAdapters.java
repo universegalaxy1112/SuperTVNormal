@@ -42,15 +42,12 @@ public class BindingAdapters {
     @BindingAdapter({"imageUrl"})
     public static void loadImage(ImageView imageView, String url) {
         if (!TextUtils.isEmpty(url)) {
-            if (url.equals("lupita")) {
-                imageView.setImageResource(R.drawable.search_icon);
-                return;
-            }
+
             try {
-                Glide.with(imageView.getContext().getApplicationContext()).load(url).placeholder((int) R.drawable.imageview_placeholder).into(imageView);
+                Picasso.with(imageView.getContext()).load(url).placeholder((int) R.drawable.imageview_placeholder).into(imageView);
             } catch (IllegalArgumentException e) {
                 Log.d("DNLS", "Glide failed");
-                Picasso.with(imageView.getContext()).load(url).placeholder((int) R.drawable.imageview_placeholder).into(imageView);
+                Glide.with(imageView.getContext().getApplicationContext()).load(url).placeholder((int) R.drawable.imageview_placeholder).centerCrop().into(imageView);
             }
         }
     }

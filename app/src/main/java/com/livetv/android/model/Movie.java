@@ -94,7 +94,7 @@ public class Movie extends VideoStream {
     }
 
     public String getDirector() {
-        return this.Director;
+        return this.Director == null ? "" : this.Director;
     }
 
     public void setDirector(String director) {

@@ -160,11 +160,11 @@
     <color name="switch_thumb_normal_material_light">#fff1f1f1</color>
 
     <color name="translucent_black_30">#4d000000</color>
-    <color name="translucent_white_30">#4dffffff</color>
+    <color name="translucent_white_30">#4DFFFFFF</color>
     <color name="netflix_red">#e50914</color>
     <color name="bg_general">#161616</color>
     <color name="white">#FFFFFF</color>
-    <color name="voice_search_label_text_color">#747474</color>
+    <color name="voice_search_label_text_color">#5C5C5C</color>
     <color name="translucent_white_5">#10706E6E</color>
     <color name="contact_us_link_color">#0B42FF</color>
     <color name="live_category_text">#1F1F1F</color>

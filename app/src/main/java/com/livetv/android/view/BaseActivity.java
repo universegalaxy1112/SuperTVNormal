@@ -22,7 +22,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     /* access modifiers changed from: protected */
     public void onPause() {
         Tracking.getInstance(this).setAction("IDLE");
-        Tracking.getInstance(this).onStop();
         super.onPause();
     }
 
@@ -32,7 +31,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (!Device.isHDMIStatusSet) {
             Device.setHDMIStatus();
         }
-        Tracking.getInstance(this).onStart();
     }
 
     /* access modifiers changed from: protected */

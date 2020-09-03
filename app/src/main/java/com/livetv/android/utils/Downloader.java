@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Environment;
 import android.provider.Settings.Global;
@@ -19,6 +20,9 @@ import com.livetv.android.R;
 import com.livetv.android.listeners.DownloaderListener;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class Downloader {
     private static Downloader sDownloader = null;
@@ -40,19 +44,24 @@ public class Downloader {
     }
 
     public void performDownload(String url, final ProgressDialog progress, DownloaderListener listener) {
+
+
         if (hasUnknownSourcesOn()) {
             Resources res = this.context.getResources();
-            Request request = new Request(Uri.parse(url));
-            try {
-                File f = new File(this.context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/update.apk");
-                if (f.exists()) {
-                    f.delete();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            request.setDescription(res.getString(R.string.downloading)).setTitle(res.getString(R.string.app_name)).setVisibleInDownloadsUi(true).setAllowedOverRoaming(false).setAllowedNetworkTypes(3).setDestinationInExternalFilesDir(this.context, Environment.DIRECTORY_DOWNLOADS, "update.apk");
-             this.myDownloadReference = this.mDownloadManager.enqueue(request);
+            DownloadManager.Request request = new Request(Uri.parse(url));
+            SimpleDateFormat formatter = new SimpleDateFormat("MMddHHmmss", Locale.US);
+            Date now = new Date();
+            request.setDescription(res.getString(R.string.downloading))
+                    .setTitle(res.getString(R.string.app_name))
+                    .setVisibleInDownloadsUi(true)
+                    .setAllowedNetworkTypes(3)
+                    .setDestinationInExternalFilesDir(this.context, Environment.DIRECTORY_DOWNLOADS, "update" + formatter.format(now) + ".apk");
+           /* if(Build.VERSION.SDK_INT > Build.VERSION_CODES.N ) {
+                request.setAllowedNetworkTypes(Request.NETWORK_WIFI);
+            } else {
+                request.setAllowedOverMetered(false);
+            }*/
+            this.myDownloadReference = this.mDownloadManager.enqueue(request);
             IntentFilter iFilter = new IntentFilter("android.intent.action.DOWNLOAD_COMPLETE");
             this.receiverDownloadComplete = new DownloaderBroadcastReceiver(this.mDownloadManager, this.myDownloadReference, listener);
             this.context.registerReceiver(this.receiverDownloadComplete, iFilter);

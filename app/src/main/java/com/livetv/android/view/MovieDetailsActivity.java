@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+
 import com.google.gson.Gson;
 import com.livetv.android.R;
 import com.livetv.android.LiveTvApplication;
@@ -40,7 +41,7 @@ public class MovieDetailsActivity extends BaseActivity {
         } else {
             this.moviesMenuFragment = new MovieDetailsFragment();
             this.moviesMenuFragment.setArguments(extras);
-            getSupportFragmentManager().beginTransaction().add((int) R.id.movie_details_container,  this.moviesMenuFragment).commit();
+            getSupportFragmentManager().beginTransaction().add((int) R.id.movie_details_container, this.moviesMenuFragment).commit();
         }
     }
 
@@ -49,7 +50,7 @@ public class MovieDetailsActivity extends BaseActivity {
         String[] uris = {movie.getStreamUrl()};
         String[] extensions = {movie.getStreamUrl().substring(movie.getStreamUrl().replace(".mkv.mkv", ".mkv").replace(".mp4.mp4", ".mp4").lastIndexOf(".") + 1)};
         Intent launchIntent = new Intent(LiveTvApplication.getAppContext(), VideoActivity.class);
-        launchIntent.putExtra("uri_list", uris).putExtra("extension_list", extensions).putExtra("movie_id_extra", movieId).putExtra("seconds_to_start", 0).putExtra("mainCategoryId", mainCategoryId).putExtra("subsURL", movie.getSubtitleUrl()).setAction("com.google.android.exoplayer.demo.action.VIEW_LIST");
+        launchIntent.putExtra("uri_list", uris).putExtra("extension_list", extensions).putExtra("movie_id_extra", movieId).putExtra("seconds_to_start", 0).putExtra("mainCategoryId", mainCategoryId).putExtra("subsURL", movie.getSubtitleUrl()).setAction("com.google.android.exoplayer.demo.action.VIEW_LIST").putExtra("title", movie.getTitle());
         startActivity(launchIntent);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }

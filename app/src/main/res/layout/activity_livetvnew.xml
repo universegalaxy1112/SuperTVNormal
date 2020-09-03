@@ -23,20 +23,17 @@
             android:orientation="vertical"
             android:focusable="false">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="10"
-                android:background="@drawable/live_bg_middle"
-                android:focusable="false">
-                <LinearLayout
+
+            <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:orientation="vertical"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="8dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="12dp"
+                    android:layout_weight="10"
+                    android:paddingBottom="8dp"
+                    android:background="@drawable/livetv_bg_middle"
                     android:focusable="false">
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -51,31 +48,56 @@
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
                             android:focusable="false"
-                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
                             android:layout_alignParentTop="true" />
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="48dp"
                             android:focusable="false"
-                            android:layout_toEndOf="@+id/exo_player_virtual"
-                            android:layout_alignParentEnd="true">
-
+                            android:layout_toStartOf="@+id/exo_player_virtual"
+                            android:layout_alignParentStart="true"
+                            android:orientation="horizontal">
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/sub_title"
+                                    style="@style/text.livetv_category_program_title"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:focusable="false"
+                                    android:text="@{currentProgram.sub_title}"
+                                    android:textSize="15sp"/>
+                                <TextView
+                                    android:id="@+id/epg"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:focusable="false"
+                                    android:ellipsize="end"
+                                    android:padding="2dp"
+                                    android:text="@{currentProgram.description}"
+                                    android:textColor="@color/white"
+                                    android:textSize="13sp" />
+                            </LinearLayout>
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="12dp"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginEnd="12dp"
+                                android:layout_marginEnd="28dp"
                                 android:gravity="center"
                                 android:orientation="vertical"
                                 android:focusable="false">
 
                                 <de.hdodenhof.circleimageview.CircleImageView
                                     android:id="@+id/mark_img"
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
+                                    android:layout_width="72dp"
+                                    android:layout_height="72dp"
                                     android:scaleType="centerCrop"
                                     android:focusable="false"
                                     app:imageUrl="@{currentProgram.iconUrl}" />
@@ -95,40 +117,16 @@
                                     android:layout_marginTop="8dp"/>
                             </LinearLayout>
 
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="4"
-                                android:orientation="vertical">
-                               <!-- <TextView
-                                    android:id="@+id/sub_title"
-                                    style="@style/text.livetv_category_program_title"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="18dp"
-                                    android:focusable="false"
-                                    android:text="@{currentProgram.sub_title}" />
-                                <TextView
-                                    android:id="@+id/epg"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:focusable="false"
-                                    android:text="@{currentProgram.description}"
-                                    android:textColor="@color/lb_grey"
-                                    android:textSize="11sp" />-->
-                            </LinearLayout>
-
                         </LinearLayout>
-                        <LinearLayout
+                        <!--<LinearLayout
                             android:id="@+id/logo"
                             android:layout_width= "60dp"
                             android:layout_height="28dp"
-                            android:background="@drawable/android_splash"
+                            android:livetv_bg_middle="@drawable/android_splash"
                             android:focusable="true"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentTop="true"
-                            android:orientation="horizontal" />
+                            android:orientation="horizontal" />-->
 
                     </RelativeLayout>
 
@@ -138,8 +136,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:layout_marginTop="14dp"
-                        android:layout_marginBottom="12dp"
+                        android:layout_marginTop="22dp"
+                        android:layout_marginBottom="10dp"
                         android:text="@{currentCategory.catName}"
                         android:onClick="@{liveTVFragmentVM::showCategories}"
                         android:focusable="false"
@@ -167,7 +165,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-            </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -180,6 +177,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_gravity="end"
             android:onClick="@{liveTVFragmentVM::toggleFullscreen}"
             android:focusable="false">
             <LinearLayout

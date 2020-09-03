@@ -5,6 +5,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Process;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AlertDialog.Builder;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.livetv.android.R;
@@ -151,6 +153,15 @@ public class MainCategoriesMenuFragment extends BaseFragment implements MainCate
                 dialog.dismiss();
             }
         });
-        alert.show();
+
+        AlertDialog dialog = alert.create();
+        dialog.create();
+        dialog.show();
+        Button ne=dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        Button po=dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        ne.setBackground(getResources().getDrawable(R.drawable.dialog_btn_background));
+        po.setBackground(getResources().getDrawable(R.drawable.dialog_btn_background));
+        ne.setPadding(16,4,16,4);
+        po.setPadding(16,4,16,4);
     }
 }

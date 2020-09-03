@@ -105,6 +105,28 @@ public class NetManager {
         });
     }
 
+    public void addRecent(String type, String cve, final StringRequestListener stringRequestListener) {
+        LiveTVServicesManual.addRecent(type, cve, stringRequestListener)
+                .delay(2, TimeUnit.SECONDS, Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean result) {
+
+                    }
+                });
+    }
+
     public void performGetCode(StringRequestListener stringRequestListener) {
         LiveTVServicesManual.performGetCode(stringRequestListener).delay(2, TimeUnit.SECONDS, Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe( new Subscriber<Boolean>() {
             public void onCompleted() {
@@ -145,7 +167,7 @@ public class NetManager {
     }
 
     public Observable<List<? extends VideoStream>> searchVideo(MainCategory mainCategory, String pattern) {
-        return LiveTVServicesManual.searchVideo(mainCategory, pattern, 30).delay(2, TimeUnit.SECONDS, Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        return LiveTVServicesManual.searchVideo(mainCategory, pattern, 45).delay(2, TimeUnit.SECONDS, Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     public void performCheckForUpdate(StringRequestListener stringRequestListener) {

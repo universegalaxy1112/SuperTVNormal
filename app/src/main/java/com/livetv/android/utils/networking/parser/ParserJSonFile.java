@@ -47,9 +47,9 @@ public class ParserJSonFile {
         for (int i = 0; i < videoArray.length(); i++) {
             LiveTVCategory liveTvCat = new LiveTVCategory();
             JSONObject tmpObj = videoArray.getJSONObject(i);
-            liveTvCat.setId(Integer.valueOf(tmpObj.getString("cve")).intValue());
+            liveTvCat.setId(Integer.parseInt(tmpObj.getString("cve")));
             liveTvCat.setCatName(tmpObj.getString("nombre"));
-            liveTvCat.setTotalChannels(Integer.valueOf(tmpObj.getString("total_canales")).intValue());
+            liveTvCat.setTotalChannels(Integer.parseInt(tmpObj.getString("total_canales")));
             liveTvCat.setPosition(i);
             dataArray.add(liveTvCat);
         }
@@ -163,6 +163,11 @@ public class ParserJSonFile {
             if (VideoStreamManager.getInstance().getFavoriteMovies().contains(String.valueOf(obj.getContentId()))) {
                 obj.setFavorite(true);
             }
+
+            if(json_obj.has("tipo"))
+                obj.setCategoryType(json_obj.getInt("tipo"));
+
+
             if (obj instanceof LiveProgram) {
                 LiveProgram liveProgram = (LiveProgram) obj;
                 if (json_obj.has("cve")) {
@@ -183,6 +188,10 @@ public class ParserJSonFile {
                 if (json_obj.has("epg_despues")) {
                     liveProgram.setEpg_despues(json_obj.getString("epg_despues"));
                 }
+                if (json_obj.has("description") && !json_obj.getString("description").equals(""))
+                    liveProgram.setDescription(json_obj.getString("description"));
+                if (json_obj.has("title") && !json_obj.getString("title").equals(""))
+                    liveProgram.setSub_title(json_obj.getString("title"));
             } else if (obj instanceof Serie) {
                 Serie movie = (Serie) obj;
                 if (json_obj.has("temporadas")) {
@@ -197,7 +206,7 @@ public class ParserJSonFile {
                     movie.setWatched(json_obj.getBoolean("Watched"));
                 }
                 if (json_obj.has("Length")) {
-                    if (TextUtils.isEmpty(json_obj.getString("Length"))) {
+                    if(TextUtils.isEmpty(json_obj.getString("Length")) || json_obj.getString("Length").equals("null")) {
                         movie.setLength(0);
                     } else {
                         movie.setLength(Integer.parseInt(json_obj.getString("Length")));
@@ -267,7 +276,7 @@ public class ParserJSonFile {
                     movie2.setWatched(json_obj.getBoolean("Watched"));
                 }
                 if (json_obj.has("Length")) {
-                    if (TextUtils.isEmpty(json_obj.getString("Length"))) {
+                    if(TextUtils.isEmpty(json_obj.getString("Length")) || json_obj.getString("Length").equals("null")) {
                         movie2.setLength(0);
                     } else {
                         movie2.setLength(Integer.parseInt(json_obj.getString("Length")));
@@ -334,7 +343,7 @@ public class ParserJSonFile {
                     movie3.setWatched(json_obj.getBoolean("Watched"));
                 }
                 if (json_obj.has("Length")) {
-                    if (TextUtils.isEmpty(json_obj.getString("Length"))) {
+                    if(TextUtils.isEmpty(json_obj.getString("Length")) || json_obj.getString("Length").equals("null")) {
                         movie3.setLength(0);
                     } else {
                         movie3.setLength(Integer.parseInt(json_obj.getString("Length")));

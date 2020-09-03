@@ -20,17 +20,21 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.livetv.android.R;
 import com.livetv.android.LiveTvApplication;
+import com.livetv.android.listeners.StringRequestListener;
 import com.livetv.android.managers.VideoStreamManager;
 import com.livetv.android.model.ModelTypes;
 import com.livetv.android.model.Movie;
 import com.livetv.android.model.Serie;
+import com.livetv.android.model.VideoStream;
 import com.livetv.android.utils.DataManager;
+import com.livetv.android.utils.networking.NetManager;
 import com.livetv.android.view.exoplayer.VideoActivity;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.livetv.android.BR.mainCategoryItem;
 import static com.livetv.android.BR.movieDetailItem;
 
 public class MovieDetailsPresenter extends Presenter implements OnFocusChangeListener {
@@ -59,6 +63,7 @@ public class MovieDetailsPresenter extends Presenter implements OnFocusChangeLis
             String g = split[i];
             TextView tv = new TextView(this.mContext);
             tv.setText(g);
+            tv.setTextColor(mContext.getResources().getColor(R.color.white));
             GradientDrawable shape = new GradientDrawable();
             shape.setShape(GradientDrawable.RECTANGLE);
             shape.setCornerRadius(corner);
@@ -103,6 +108,7 @@ public class MovieDetailsPresenter extends Presenter implements OnFocusChangeLis
     }
 
     public void onUnbindViewHolder(ViewHolder viewHolder) {
+
     }
 
     public void onItemClicked(Movie mMovie, boolean fromStart) {
@@ -116,48 +122,108 @@ public class MovieDetailsPresenter extends Presenter implements OnFocusChangeLis
         } else {
             DataManager.getInstance().saveData("seconds" + movieId, Integer.valueOf(0));
         }
-        if (this.mMainCategoryId == 0) {
+        if (mMainCategoryId == 0 || mMainCategoryId == 3) {
             addRecentMovies(mMovie);
         } else if (this.mMainCategoryId == 1 || this.mMainCategoryId == 2 || this.mMainCategoryId == 6) {
             addRecentSerie();
         }
         Intent launchIntent = new Intent(LiveTvApplication.getAppContext(), VideoActivity.class);
-        launchIntent.putExtra("uri_list", uris).putExtra("extension_list", extensions).putExtra("movie_id_extra", movieId).putExtra("seconds_to_start", secondsToPlay).putExtra("mainCategoryId", this.mMainCategoryId).putExtra("subsURL", mMovie.getSubtitleUrl()).setAction("com.google.android.exoplayer.demo.action.VIEW_LIST").setFlags(FLAG_ACTIVITY_NEW_TASK);
+        launchIntent.putExtra("uri_list", uris).putExtra("extension_list", extensions).putExtra("movie_id_extra", movieId).putExtra("seconds_to_start", secondsToPlay).putExtra("mainCategoryId", this.mMainCategoryId).putExtra("subsURL", mMovie.getSubtitleUrl()).setAction("com.google.android.exoplayer.demo.action.VIEW_LIST").putExtra("title", mMovie.getTitle()).setFlags(FLAG_ACTIVITY_NEW_TASK);
         this.mContext.startActivity(launchIntent);
     }
 
     private void addRecentMovies(Movie movie) {
-        String recentMovies = DataManager.getInstance().getString("recentMovies", "");
+        NetManager.getInstance().addRecent(Integer.toString(movie.getCategoryType()), Integer.toString(movie.getContentId()), new StringRequestListener() {
+            @Override
+            public void onCompleted(String response) {
+                Log.i("TAG", "success log recent");
+
+            }
+
+            @Override
+            public void onError() {
+                Log.i("TAG", "fail log recent");
+
+            }
+        });
+        /*String serieType = "";
+        if (VideoStreamManager.getInstance().getMainCategory(mMainCategoryId).getModelType().equals(ModelTypes.MOVIE_CATEGORIES)) {
+            serieType = "recentMovies";
+        } else if(VideoStreamManager.getInstance().getMainCategory(mMainCategoryId).getModelType().equals(ModelTypes.ENTERTAINMENT_CATEGORIES)){
+            serieType = "recentEntertainment";
+        }
+        String recentMovies = DataManager.getInstance().getString(serieType,"");
         if (TextUtils.isEmpty(recentMovies)) {
             List<Movie> movies = new ArrayList<>();
             movies.add(movie);
-            DataManager.getInstance().saveData("recentMovies", new Gson().toJson((Object) movies));
-            return;
+            DataManager.getInstance().saveData(serieType, new Gson().toJson(movies));
         }
-        List<Movie> movieList = (List) new Gson().fromJson(recentMovies, new TypeToken<List<Movie>>() {
-        }.getType());
-        boolean needsToAdd = true;
-        Iterator it = movieList.iterator();
-        while (true) {
-            if (!it.hasNext()) {
-                break;
+        else {
+            List<Movie> movieList = new Gson().fromJson(recentMovies, new TypeToken<List<Movie>>() { }.getType());
+            boolean needsToAdd = true;
+            Iterator it = movieList.iterator();
+            while (true) {
+                if (!it.hasNext()) {
+                    break;
+                }
+                if (movie.getContentId() == ((Movie) it.next()).getContentId()) {
+                    needsToAdd = false;
+                    break;
+                }
             }
-            if (movie.getContentId() == ((Movie) it.next()).getContentId()) {
-                needsToAdd = false;
-                break;
+            if (needsToAdd) {
+                if (movieList.size() == 10) {
+                    movieList.remove(9);
+                }
+                movieList.add(0, movie);
+                DataManager.getInstance().saveData(serieType, new Gson().toJson( movieList));
             }
-        }
-        if (needsToAdd) {
-            if (movieList.size() == 10) {
-                movieList.remove(9);
-            }
-            movieList.add(0, movie);
-            DataManager.getInstance().saveData("recentMovies", new Gson().toJson((Object) movieList));
-        }
+        }*/
     }
 
     private void addRecentSerie() {
-        String serieType;
+       /* String recentSeries;
+        VideoStreamManager videoStreamManager=  VideoStreamManager.getInstance();
+        String lastSelectedSerie = DataManager.getInstance().getString("lastSerieSelected", null);
+        if (lastSelectedSerie != null) {
+            Serie serie = (Serie) new Gson().fromJson(lastSelectedSerie, Serie.class);
+            String serieType;
+            if (videoStreamManager.getMainCategory(mMainCategoryId).getModelType() == ModelTypes.SERIES_CATEGORIES) {
+                serieType = "recentSeries";
+            } else if (videoStreamManager.getMainCategory(mMainCategoryId).getModelType() == ModelTypes.SERIES_KIDS_CATEGORIES) {
+                serieType = "recentKids";
+            } else if (videoStreamManager.getMainCategory(mMainCategoryId).getModelType() == ModelTypes.KARAOKE_CATEGORIES) {
+                serieType = "recentKara";
+            } else {
+                serieType = "recentSeries";
+            }
+            recentSeries = DataManager.getInstance().getString(serieType, "");
+
+            if (TextUtils.isEmpty(recentSeries)) {
+                List<Serie> series = new ArrayList<>();
+                series.add(serie);
+
+                DataManager.getInstance().saveData(serieType, new Gson().toJson(series));
+            } else {
+                List<Serie> serieList = new Gson().fromJson(recentSeries, new TypeToken<List<Serie>>() {
+                }.getType());
+                boolean needsToAdd = true;
+                for (Serie ser : serieList) {
+                    if (serie.getContentId() == ser.getContentId()) {
+                        needsToAdd = false;
+                        break;
+                    }
+                }
+                if (needsToAdd) {
+                    if (serieList.size() == 10) {
+                        serieList.remove(9);
+                    }
+                    serieList.add(0, serie);
+                    DataManager.getInstance().saveData(serieType, new Gson().toJson(serieList));
+                }
+            }
+        }*/
+       /* String serieType;
         try {
             String lastSelectedSerie = DataManager.getInstance().getString("lastSerieSelected", null);
             if (lastSelectedSerie != null) {
@@ -198,6 +264,28 @@ public class MovieDetailsPresenter extends Presenter implements OnFocusChangeLis
                 }
             }
         } catch (Exception e) {
+        }*/
+
+
+        try {
+            String lastSelectedSerie = DataManager.getInstance().getString("lastSerieSelected", null);
+            if (lastSelectedSerie != null) {
+                Serie serie = new Gson().fromJson(lastSelectedSerie, Serie.class);
+                NetManager.getInstance().addRecent(Integer.toString(serie.getCategoryType()), Integer.toString(serie.getContentId()), new StringRequestListener() {
+                    @Override
+                    public void onCompleted(String response) {
+                        Log.i("TAG", "success log recent");
+                    }
+
+                    @Override
+                    public void onError() {
+                        Log.i("TAG", "fail log recent");
+                    }
+                });
+
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -11,7 +11,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <!--<item name="android:background">@color/colorBackground</item>-->
+        <!--<item name="android:livetv_bg_middle">@color/colorBackground</item>-->
         <item name="android:textColorPrimary">@color/colorTextTitle</item>
     </style>
 
@@ -34,7 +34,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!---->
-        <!--<item name="android:background">@color/colorPrimaryDark</item>-->
+        <!--<item name="android:livetv_bg_middle">@color/colorPrimaryDark</item>-->
         <!--<item name="android:colorBackground">@color/colorPrimaryDark</item>-->
         <!--<item name="android:textColor">@color/colorTextTitle</item>-->
         <!--<item name="android:textColorPrimary">@color/colorTextTitle</item>-->
@@ -58,18 +58,18 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <!--<item name="android:background">@color/colorBackground</item>-->
+        <!--<item name="android:livetv_bg_middle">@color/colorBackground</item>-->
         <item name="android:textColorPrimary">@color/colorTextTitle</item>
     </style>
 
     <!--app bar theme-->
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
-        <!--<item name="android:background">@color/colorPrimaryDark</item>-->
+        <!--<item name="android:livetv_bg_middle">@color/colorPrimaryDark</item>-->
     </style>
 
     <!--toolbar theme-->
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
-        <!--<item name="android:background">@color/colorPrimaryDark</item>-->
+        <!--<item name="android:livetv_bg_middle">@color/colorPrimaryDark</item>-->
         <item name="android:textColorPrimary">@color/colorTextTitle</item>
         <item name="android:textColorSecondary">@color/colorTextTitle</item>
         <item name="android:textColor">@color/colorTextTitle</item>
@@ -94,7 +94,7 @@
     </style>
     <style name="text.livetv">
         <item name="android:textColor">@color/live_category_text</item>
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
     <style name="text.movie_detail_title"  >

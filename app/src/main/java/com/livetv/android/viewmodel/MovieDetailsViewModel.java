@@ -4,16 +4,19 @@ import android.content.Context;
 import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View.OnClickListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.livetv.android.databinding.MovieDetailsFragmentBinding;
 import com.livetv.android.listeners.OptionsMenuOpenListener;
+import com.livetv.android.listeners.StringRequestListener;
 import com.livetv.android.managers.VideoStreamManager;
 import com.livetv.android.model.ModelTypes;
 import com.livetv.android.model.Movie;
 import com.livetv.android.model.Serie;
 import com.livetv.android.utils.DataManager;
+import com.livetv.android.utils.networking.NetManager;
 import com.livetv.android.viewmodel.MovieDetailsViewModelContract.View;
 import com.livetv.android.viewmodel.MovieDetailsViewModelContract.ViewModel;
 import java.util.ArrayList;
@@ -115,7 +118,40 @@ public class MovieDetailsViewModel implements ViewModel {
     }
 
     private void addRecentMovies(Movie movie) {
-        String recentMovies = DataManager.getInstance().getString("recentMovies", "");
+       /* String serieType = "";
+        if (videoStreamManager.getMainCategory(mMainCategoryId).getModelType().equals(ModelTypes.MOVIE_CATEGORIES)) {
+            serieType = "recentMovies";
+        } else if(videoStreamManager.getMainCategory(mMainCategoryId).getModelType().equals(ModelTypes.ENTERTAINMENT_CATEGORIES)){
+            serieType = "recentEntertainment";
+        }
+        String recentMovies = DataManager.getInstance().getString(serieType,"");
+        if (TextUtils.isEmpty(recentMovies)) {
+            List<Movie> movies = new ArrayList<>();
+            movies.add(movie);
+            DataManager.getInstance().saveData(serieType, new Gson().toJson(movies));
+        }
+        else {
+            List<Movie> movieList = new Gson().fromJson(recentMovies, new TypeToken<List<Movie>>() { }.getType());
+            boolean needsToAdd = true;
+            Iterator it = movieList.iterator();
+            while (true) {
+                if (!it.hasNext()) {
+                    break;
+                }
+                if (movie.getContentId() == ((Movie) it.next()).getContentId()) {
+                    needsToAdd = false;
+                    break;
+                }
+            }
+            if (needsToAdd) {
+                if (movieList.size() == 10) {
+                    movieList.remove(9);
+                }
+                movieList.add(0, movie);
+                DataManager.getInstance().saveData(serieType, new Gson().toJson( movieList));
+            }
+        }*/
+        /*String recentMovies = DataManager.getInstance().getString("recentMovies", "");
         if (TextUtils.isEmpty(recentMovies)) {
             List<Movie> movies = new ArrayList<>();
             movies.add(movie);
@@ -141,11 +177,88 @@ public class MovieDetailsViewModel implements ViewModel {
             }
             movieList.add(0, movie);
             DataManager.getInstance().saveData("recentMovies", new Gson().toJson((Object) movieList));
-        }
+        }*/
+        NetManager.getInstance().addRecent(Integer.toString(movie.getCategoryType()), Integer.toString(movie.getContentId()), new StringRequestListener() {
+            @Override
+            public void onCompleted(String response) {
+                Log.i("TAG", "success log recent");
+
+            }
+
+            @Override
+            public void onError() {
+                Log.i("TAG", "fail log recent");
+
+            }
+        });
     }
 
     private void addRecentSerie() {
-        String serieType;
+
+       /* String recentSeries;
+        VideoStreamManager videoStreamManager=  VideoStreamManager.getInstance();
+        String lastSelectedSerie = DataManager.getInstance().getString("lastSerieSelected", null);
+        if (lastSelectedSerie != null) {
+            Serie serie = (Serie) new Gson().fromJson(lastSelectedSerie, Serie.class);
+            String serieType;
+            if (videoStreamManager.getMainCategory(mMainCategoryId).getModelType() == ModelTypes.SERIES_CATEGORIES) {
+                serieType = "recentSeries";
+            } else if (videoStreamManager.getMainCategory(mMainCategoryId).getModelType() == ModelTypes.SERIES_KIDS_CATEGORIES) {
+                serieType = "recentKids";
+            } else if (videoStreamManager.getMainCategory(mMainCategoryId).getModelType() == ModelTypes.KARAOKE_CATEGORIES) {
+                serieType = "recentKara";
+            } else {
+                serieType = "recentSeries";
+            }
+            recentSeries = DataManager.getInstance().getString(serieType, "");
+
+            if (TextUtils.isEmpty(recentSeries)) {
+                List<Serie> series = new ArrayList<>();
+                series.add(serie);
+
+                DataManager.getInstance().saveData(serieType, new Gson().toJson(series));
+            } else {
+                List<Serie> serieList = new Gson().fromJson(recentSeries, new TypeToken<List<Serie>>() {
+                }.getType());
+                boolean needsToAdd = true;
+                for (Serie ser : serieList) {
+                    if (serie.getContentId() == ser.getContentId()) {
+                        needsToAdd = false;
+                        break;
+                    }
+                }
+                if (needsToAdd) {
+                    if (serieList.size() == 10) {
+                        serieList.remove(9);
+                    }
+                    serieList.add(0, serie);
+                    DataManager.getInstance().saveData(serieType, new Gson().toJson(serieList));
+                }
+            }
+        }*/
+
+        try {
+            String lastSelectedSerie = DataManager.getInstance().getString("lastSerieSelected", null);
+            if (lastSelectedSerie != null) {
+                Serie serie = new Gson().fromJson(lastSelectedSerie, Serie.class);
+                NetManager.getInstance().addRecent(Integer.toString(serie.getCategoryType()), Integer.toString(serie.getContentId()), new StringRequestListener() {
+                    @Override
+                    public void onCompleted(String response) {
+                        Log.i("TAG", "success log recent");
+                    }
+
+                    @Override
+                    public void onError() {
+                        Log.i("TAG", "fail log recent");
+                    }
+                });
+
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        /*String serieType;
         try {
             String lastSelectedSerie = DataManager.getInstance().getString("lastSerieSelected", null);
             if (lastSelectedSerie != null) {
@@ -186,6 +299,6 @@ public class MovieDetailsViewModel implements ViewModel {
                 }
             }
         } catch (Exception e) {
-        }
+        }*/
     }
 }

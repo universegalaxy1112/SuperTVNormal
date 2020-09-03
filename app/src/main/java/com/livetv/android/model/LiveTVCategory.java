@@ -1,34 +1,45 @@
 package com.livetv.android.model;
 
+import com.livetv.android.model.BaseCategory;
+import com.livetv.android.model.LiveProgram;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class LiveTVCategory extends BaseCategory {
-    private List<LiveProgram> livePrograms = new ArrayList();
+
+    //    private int id;           //cve
+//    private String catName;   //nombre
     private int position;
     private int totalChannels;
+    private List<LiveProgram> livePrograms;
 
-    public int getTotalChannels() {
-        return this.totalChannels;
+    public LiveTVCategory() {
+        livePrograms = new ArrayList<>();
     }
 
-    public void setTotalChannels(int totalChannels2) {
-        this.totalChannels = totalChannels2;
+    public String getTotalChannels() {
+        return "Channels(" + totalChannels + ")";
+    }
+
+    public void setTotalChannels(int totalChannels) {
+        this.totalChannels = totalChannels;
     }
 
     public List<LiveProgram> getLivePrograms() {
-        return this.livePrograms;
+        return livePrograms;
     }
 
-    public void setLivePrograms(List<LiveProgram> livePrograms2) {
-        this.livePrograms = livePrograms2;
+    public void setLivePrograms(List<LiveProgram> livePrograms) {
+        this.livePrograms = livePrograms;
     }
 
     public int getPosition() {
-        return this.position;
+        return position;
     }
 
-    public void setPosition(int position2) {
-        this.position = position2;
+    public void setPosition(int position) {
+        this.position = position;
     }
+
 }

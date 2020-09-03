@@ -21,7 +21,6 @@ import com.livetv.android.model.LiveProgram;
 import com.livetv.android.utils.Device;
 import com.livetv.android.utils.Tracking;
 import com.livetv.android.view.exoplayer.VideoActivity;
-import com.livetv.android.view.exoplayer.VideoFragment;
 import com.livetv.android.view.exoplayernew.VideoPlayFragment;
 import com.livetv.android.viewmodel.Lifecycle;
 import com.livetv.android.viewmodel.LiveTVViewModel;
@@ -109,7 +108,7 @@ public class LiveTvNewActivity extends AppCompatActivity implements LiveProgramS
         }
 
         if(keyCode==KeyEvent.KEYCODE_DPAD_RIGHT){
-            liveTVViewModel.fullScreen(null);
+            liveTVViewModel.fullScreen(videoPlayFragment);
             return false;
         }
 
@@ -141,7 +140,6 @@ public class LiveTvNewActivity extends AppCompatActivity implements LiveProgramS
         if (!Device.isHDMIStatusSet) {
             Device.setHDMIStatus();
         }
-        Tracking.getInstance(this).onStart();
     }
 
     @Override
@@ -155,6 +153,9 @@ public class LiveTvNewActivity extends AppCompatActivity implements LiveProgramS
                 .putExtra(VideoPlayFragment.EXTENSION_LIST_EXTRA, extensions)
                 .putExtra("title",liveProgram.getTitle())
                 .putExtra("icon_url", liveProgram.getIconUrl())
+                .putExtra("topic", liveProgram.getEpg_ahora())
+                .putExtra("description", liveProgram.getDescription())
+                .putExtra("sub_title", liveProgram.getSub_title())
                 .setAction(VideoPlayFragment.ACTION_VIEW_LIST);
         videoPlayFragment = (VideoPlayFragment)getSupportFragmentManager().findFragmentById(R.id.exo_player);
         if(videoPlayFragment == null) return;
@@ -167,7 +168,6 @@ public class LiveTvNewActivity extends AppCompatActivity implements LiveProgramS
     @Override
     protected void onPause() {
         Tracking.getInstance(this).setAction("IDLE");
-        Tracking.getInstance(this).onStop();
         super.onPause();
     }
 

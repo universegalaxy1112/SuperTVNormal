@@ -8,8 +8,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,7 +81,7 @@ import java.util.Locale;
     isDisabled = selector.getRendererDisabled(rendererIndex);
     override = selector.getSelectionOverride(rendererIndex, trackGroups);
 
-    AlertDialog.Builder builder = new AlertDialog.Builder(activity,R.style.AppCompatAlertDialogStyle);
+    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
     builder.setTitle(title)
             .setView(buildView(builder.getContext()))
             .setPositiveButton(R.string.accept, this)

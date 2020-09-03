@@ -1,15 +1,19 @@
 package com.livetv.android.utils.networking.services;
 
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.livetv.android.listeners.StringRequestListener;
 import com.livetv.android.model.LiveProgram;
 import com.livetv.android.model.LiveTVCategory;
 import com.livetv.android.model.MainCategory;
 import com.livetv.android.model.MovieCategory;
 import com.livetv.android.model.Serie;
+import com.livetv.android.model.User;
 import com.livetv.android.model.VideoStream;
+import com.livetv.android.utils.DataManager;
 import com.livetv.android.utils.Device;
 import com.livetv.android.utils.networking.NetManager;
 import com.livetv.android.utils.networking.WebConfig;
@@ -87,6 +91,52 @@ public class LiveTVServicesManual {
                     stringRequestListener.onCompleted(response);
                 }
 
+                public void onError() {
+                    stringRequestListener.onError();
+                }
+            });
+        }
+        return true;
+    }
+
+    public static Observable<Boolean> addRecent(final String type, final String cve, final StringRequestListener stringRequestListener) {
+
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                subscriber.onNext(recentRequest(type, cve, stringRequestListener));
+                subscriber.onCompleted();
+            }
+        })
+                .subscribeOn(Schedulers.computation())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    private static boolean recentRequest(String type, String cve, final StringRequestListener stringRequestListener) {
+        String addRecentUrl;
+        String user = "";
+        try {
+            String theUser = DataManager.getInstance().getString("theUser", "");
+            if (!TextUtils.isEmpty(theUser)) {
+                user = ( new Gson().fromJson(theUser, User.class)).getName();
+            }
+            addRecentUrl = WebConfig.addRecent.replace("{USER}", user)
+                    .replace("{TIPO}", type)
+                    .replace("{CVE}", cve);
+        } catch (Exception e) {
+            addRecentUrl = "";
+        }
+
+        if (!TextUtils.isEmpty(addRecentUrl)) {
+            NetManager.getInstance().makeStringRequest(addRecentUrl, new StringRequestListener() {
+                @Override
+                public void onCompleted(String response) {
+                    stringRequestListener.onCompleted(response);
+
+                }
+                @Override
                 public void onError() {
                     stringRequestListener.onError();
                 }
